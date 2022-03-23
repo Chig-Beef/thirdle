@@ -4,6 +4,7 @@ var guesses = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]];
 var tiles = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
 var pos = [0, 0]
 var guessed = false;
+var wrong = false;
 
 
 function setup() {
@@ -17,7 +18,7 @@ function setup() {
   word = words[num];
   //console.log(words);
   //console.log(num);
-  console.log(word);
+  //console.log(word);
 }
 
 function draw() {
@@ -45,6 +46,9 @@ function draw() {
       fill(0, 0, 0);
       stroke(0, 0, 0);
       text(guesses[r][c], 415+c*60, 140+r*60);
+      if (wrong) {
+        text(word, 417, 500)
+      }
     }
   }
 }
@@ -201,6 +205,9 @@ function guess(guess) {
         if (done === 3) {
           guessed = true;
         }
+      }
+      if (pos[0] === 4) {
+        wrong = true;
       }
     }
   }
