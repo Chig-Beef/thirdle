@@ -173,6 +173,9 @@ function guess(guess) {
   }
 
   else if (guess === "Enter") {
+    if (guesses[pos[0]][2] === "") {
+      return;
+    }
     if (pos[1] === 3) {
       if (guesses[pos[0]][2] != "") {
         var done = 0;
