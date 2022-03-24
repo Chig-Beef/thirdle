@@ -18,7 +18,7 @@ function setup() {
   word = words[num];
   //console.log(words);
   //console.log(num);
-  //console.log(word);
+  console.log(word);
 }
 
 function draw() {
@@ -61,6 +61,7 @@ function reform() {
     if (guessed) {
       return;
     }
+    //console.log(event.key);
 
     switch (event.key) {
       case "a":
@@ -147,6 +148,9 @@ function reform() {
       case "Enter":
         guess("Enter");
         break;
+      case "Tab":
+        redo();
+        break;
       default:
         //console.log(event.key);
         return;
@@ -163,63 +167,66 @@ function guess(guess) {
       pos[1] = 0;
     }
   }
+
   else if (guess === "Enter") {
     if (pos[1] === 3) {
       if (guesses[pos[0]][2] != "") {
         var done = 0;
-        if (word.includes(guesses[pos[0]][0])) {
-          tiles[pos[0]][0] = 2
-        }
-        else {
-          tiles[pos[0]][0] = 1
-        }
-        if (guesses[pos[0]][0] === word[0]) {
-          tiles[pos[0]][0] = 3
-          done++;
-        }
+      }
+    }
+		var ded = [0, 0, 0];
+    var ded2 = [0, 0, 0];
 
-        if (word.includes(guesses[pos[0]][1])) {
-          tiles[pos[0]][1] = 2
-        }
-        else {
-          tiles[pos[0]][1] = 1
-        }
-        if (guesses[pos[0]][1] === word[1]) {
-          tiles[pos[0]][1] = 3
-          done++;
-        }
+    for (i=0; i<3; i++) {
+      if (guesses[pos[0]][i] === word[i]) {
+        tiles[pos[0]][i] = 3;
+        done++;
+        ded[i] = 1;
+      }
+    }
 
-        if (word.includes(guesses[pos[0]][2])) {
-          tiles[pos[0]][2] = 2
-        }
-        else {
-          tiles[pos[0]][2] = 1
-        }
-        if (guesses[pos[0]][2] === word[2]) {
-          tiles[pos[0]][2] = 3
-          done++;
-        }
-
-        pos[0]++;
-        pos[1] = 0;
-        if (done === 3) {
-          guessed = true;
+    for (i=0; i<3; i++) {
+      if (tiles[pos[0]][i] != 3) {
+        tiles[pos[0]][i] = 1;
+        for (j=0; j<3; j++) {
+          if (ded[j] === 0) {
+            if (ded2[j] === 0) {
+              if (word[j] === guesses[pos[0]][i]) {
+                tiles[pos[0]][i] = 2;
+                ded2[j]++;
+              }
+            }
+          }
         }
       }
-      if (pos[0] === 4) {
-        wrong = true;
-      }
+    }
+    pos[0]++;
+    pos[1] = 0;
+    if (done === 3) {
+      guessed = true;
+    }
+    if (pos[0] === 4) {
+      wrong = true;
     }
   }
   else {
     if (guesses[3][2] === ""){
       guesses[pos[0]][pos[1]] = guess;
-      //console.log(guesses);
       pos[1]++;
       if (pos[1] > 3) {
         pos[1] -= 1;
-        //pos[0]++;
       }
     }
   }
+}
+
+function redo() {
+  //const words = ["RED", "POT", "HAM", "ZAP", "NEW", "MUM", "DAD","GUN","FAT","SUS","TUB"];
+  guesses = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]];
+  tiles = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
+  pos = [0, 0]
+  guessed = false;
+  wrong = false;
+  const num = Math.floor(Math.random()*words.length);
+  word = words[num];
 }
