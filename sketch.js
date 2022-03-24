@@ -62,9 +62,6 @@ function reform() {
     if (event.defaultPrevented) {
       return; // Do nothing if the event was already processed
     }
-    if (guessed) {
-      return;
-    }
     //console.log(event.key);
 
     switch (event.key) {
@@ -164,6 +161,9 @@ function reform() {
   }
 
 function guess(guess) {
+  if (guessed) {
+    return;
+  }
   if (guess === "Backspace") {
     guesses[pos[0]][pos[1]-1] = "";
     pos[1] -= 1;
