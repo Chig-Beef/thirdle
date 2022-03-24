@@ -18,7 +18,7 @@ function setup() {
   word = words[num];
   //console.log(words);
   //console.log(num);
-  console.log(word);
+  //console.log(word);
 }
 
 function draw() {
@@ -43,11 +43,15 @@ function draw() {
       }
       rect(400+c*60, 100+r*60, 55, 55);
 
+      fill(215, 215, 215);
+      stroke(200, 200, 200);
+      rect(440, 460, 100, 60);
+
       fill(0, 0, 0);
       stroke(0, 0, 0);
       text(guesses[r][c], 415+c*60, 140+r*60);
       if (wrong) {
-        text(word, 417, 500)
+        text(word, 460, 500)
       }
     }
   }
