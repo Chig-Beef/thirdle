@@ -152,7 +152,7 @@ function reform() {
       case "Enter":
         guess("Enter");
         break;
-      case "Tab":
+      case "Alt":
         redo();
         break;
       default:
