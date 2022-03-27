@@ -1,14 +1,14 @@
 var word;
-//const words = ["RED", "POT", "HAM", "ZAP", "NEW", "MUM", "DAD","GUN","FAT","SUS","TUB"];
 var guesses = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]];
 var tiles = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
 var pos = [0, 0]
 var guessed = false;
 var wrong = false;
+var letters = [];
 
 
 function setup() {
-  var cnv = createCanvas(975, 600);
+  const cnv = createCanvas(975, 600);
   cnv.center('horizontal')
   background(235);
   textSize(32);
@@ -16,9 +16,10 @@ function setup() {
 
   const num = Math.floor(Math.random()*words.length);
   word = words[num];
-  //console.log(words);
-  //console.log(num);
-  //console.log(word);
+
+  for (i=0; i<26; i++) {
+    letters.push(0);
+  }
 }
 
 function draw() {
@@ -46,15 +47,15 @@ function draw() {
       fill(215, 215, 215);
       stroke(200, 200, 200);
       rect(440, 460, 100, 60);
+      color_stroke(0, 0, 0);
 
-      fill(0, 0, 0);
-      stroke(0, 0, 0);
       text(guesses[r][c], 415+c*60, 140+r*60);
-      if (wrong) {
+      if (wrong || guessed) {
         text(word, 460, 500)
       }
     }
   }
+  draw_letters();
 }
 
 function reform() {
@@ -63,7 +64,6 @@ function reform() {
       return; // Do nothing if the event was already processed
     }
     //console.log(event.key);
-
     switch (event.key) {
       case "a":
         guess("A");
@@ -189,17 +189,20 @@ function guess(guess) {
         tiles[pos[0]][i] = 3;
         done++;
         ded[i] = 1;
+        letters[word.codePointAt(i)-65] = 3;
       }
     }
 
     for (i=0; i<3; i++) {
       if (tiles[pos[0]][i] != 3) {
         tiles[pos[0]][i] = 1;
+        letters[guesses[pos[0]][i].codePointAt(0)-65] = 1;
         for (j=0; j<3; j++) {
           if (ded[j] === 0) {
             if (ded2[j] === 0) {
               if (word[j] === guesses[pos[0]][i]) {
                 tiles[pos[0]][i] = 2;
+                letters[guesses[pos[0]][i].codePointAt(0)-65] = 2;
                 ded2[j]++;
               }
             }
@@ -236,4 +239,37 @@ function redo() {
   wrong = false;
   const num = Math.floor(Math.random()*words.length);
   word = words[num];
+  letters = [];
+  for (i=0; i<26; i++) {
+    letters.push(0);
+  }
+}
+
+function color_stroke(r, g, b) {
+  fill(r, g, b);
+  stroke(r, g, b);
+}
+
+function draw_letters() {
+  for (n=0; n<26; n++) {
+    if (letters[n] === 0){
+      fill(215, 215, 215);
+      stroke(200, 200, 200);
+    }
+    else if (letters[n] === 1) {
+      fill(100, 100, 100);
+      stroke(128, 128, 128);
+    }
+    else if (letters[n] === 2) {
+      fill(200, 200, 12);
+      stroke(255, 255, 0);
+    }
+    else if (letters[n] === 3) {
+      fill(12, 200, 12);
+      stroke(0, 255, 0);
+    }
+    rect(40+45*(n%3), 40+45*Math.floor(n/3), 40, 40);
+    color_stroke(0, 0, 0);
+    text(String.fromCharCode(n+65), 47+45*(n%3), 72+45*Math.floor(n/3));
+  }
 }
