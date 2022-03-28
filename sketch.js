@@ -231,7 +231,6 @@ function guess(guess) {
 }
 
 function redo() {
-  //const words = ["RED", "POT", "HAM", "ZAP", "NEW", "MUM", "DAD","GUN","FAT","SUS","TUB"];
   guesses = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]];
   tiles = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
   pos = [0, 0]
