@@ -1,30 +1,39 @@
-let word;
-let guesses = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]];
-let tiles = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
+let word, guesses, tiles, letters;
 let pos = [0, 0];
 let guessed = false;
 let wrong = false;
-let letters = [];
+
+const rows = 4;
+const cols = 3;
 
 function setup() {
-    const cnv = createCanvas(975, 600);
+    const cnv = createCanvas(600, 600);
     cnv.center('horizontal')
+    translate(width/2, 0);
     background(235);
     textSize(32);
-    text("THIRDLE", 417, 50);
+
+    textAlign(CENTER, TOP);
+    rectMode(CENTER);
+
+    text("THIRDLE", 0, 50);
+
+    create_arrays();
 
     const num = Math.floor(Math.random()*words.length);
     word = words[num];
 
+    letters = [];
     for (let i = 0; i < 26; i++) {
         letters.push(0);
     }
+    get_keys();
 }
 
 function draw() {
-    reform();
-    for (let r = 0; r < 4; r++) {
-        for (let c = 0; c < 3; c++) {
+    translate(width/2, 0);
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
             switch (tiles[r][c]) {
                 case 0:
                     fill(215, 215, 215);
@@ -43,19 +52,22 @@ function draw() {
                     stroke(0, 255, 0);
                     break;
             }
-            rect(400 + c * 60, 100 + r * 60, 55, 55);
+            rect(c * 60 - 60, 130 + r * 60, 55, 55);
 
-            fill(215, 215, 215);
-            stroke(200, 200, 200);
-            rect(440, 460, 100, 60);
             color_stroke(0, 0, 0);
-
-            text(guesses[r][c], 415 + c * 60, 140 + r * 60);
-            if (wrong || guessed) {
-                text(word, 460, 500)
-            }
+            text(guesses[r][c], c * 60 - 60, 118 + r * 60);
         }
     }
+
+    fill(215, 215, 215);
+    stroke(200, 200, 200);
+    rect(0, 460, 100, 60);
+
+    if (wrong || guessed) {
+        color_stroke(0, 0, 0);
+        text(word, 0, 447)
+    }
+
     draw_letters();
 }
 
